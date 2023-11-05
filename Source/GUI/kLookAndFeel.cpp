@@ -19,12 +19,20 @@ void Laf::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int heigh
 
     auto boundsFull = Rectangle<int>(x, y, width, height).toFloat();
     auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(15);
-    bounds.translate(0, boundsFull.getHeight() / 4);
 
     auto radius = jmin(bounds.getWidth(), bounds.getHeight()) / 2.0f;
     auto toAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
-    auto lineW = jmin(8.0f, radius * 0.5f);
-    auto arcRadius = radius - lineW * 0.5f;
+    auto lineW = jmin(8.f, radius * 0.5f);
+    auto arcRadius = radius - lineW * .5f;
+
+    if (arcRadius / radius > .76) //may have to adjust this ratio for future projectss
+    {
+        bounds.translate(0, bounds.getHeight() / 8);
+    }
+    else
+    {
+        bounds.translate(0, bounds.getHeight() / 2);
+    }
 
     auto rootTwo = MathConstants<float>::sqrt2;
 
@@ -39,7 +47,7 @@ void Laf::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int heigh
         true);
 
     g.setColour(unfill);
-    g.strokePath(backgroundArc, PathStrokeType(lineW / 2, PathStrokeType::curved, PathStrokeType::rounded));
+    g.strokePath(backgroundArc, PathStrokeType(lineW/2, PathStrokeType::curved, PathStrokeType::rounded));
 
     if (slider.isEnabled())
     {
@@ -64,11 +72,11 @@ void Laf::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int heigh
 
     //g.setGradientFill(grad);
     g.setColour(Colours::black);
-    g.fillRoundedRectangle(boundsFull.getCentreX() - (radius * rootTwo / 2), boundsFull.getCentreY() - (radius * rootTwo / 2), radius * rootTwo, radius * rootTwo, radius * .7);
+    g.fillRoundedRectangle(bounds.getCentreX() - (radius * rootTwo / 2), bounds.getCentreY() - (radius * rootTwo / 2), radius * rootTwo, radius * rootTwo, radius * .7);
 
     //add circle around dial
     g.setColour(Colour(186u, 34u, 34u));
-    g.drawRoundedRectangle(boundsFull.getCentreX() - (radius * rootTwo / 2), boundsFull.getCentreY() - (radius * rootTwo / 2), radius * rootTwo, radius * rootTwo, radius * .7, 1.5f);
+    g.drawRoundedRectangle(bounds.getCentreX() - (radius * rootTwo / 2), bounds.getCentreY() - (radius * rootTwo / 2), radius * rootTwo, radius * rootTwo, radius * .7, 1.5f);
 
     //make dial line
     g.setColour(Colours::whitesmoke);
