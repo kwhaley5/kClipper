@@ -58,9 +58,13 @@ void KClipperAudioProcessorEditor::paint(juce::Graphics& g)
     bounds = getLocalBounds();
 
     auto center = bounds.reduced(bounds.getWidth() * .3, bounds.getHeight() * .2);
-    center.translate(0, -25);
+    /*auto width = static_cast<juce::String>(center.getWidth());
+    auto height = static_cast<juce::String>(center.getHeight());
+    g.drawFittedText(width, center, juce::Justification::left, 1);
+    g.drawFittedText(height, center, juce::Justification::right, 1);*/
+    center.translate(0, -15);
     auto centerHold = center;
-    //g.drawRect(center);
+    g.drawRect(center);
     //g.drawRect(noMeter);
 
     g.setColour(juce::Colour(64u, 194u, 230u));
