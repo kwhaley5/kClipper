@@ -14,6 +14,10 @@
         <FILE id="yckNSY" name="kLookAndFeel.cpp" compile="1" resource="0"
               file="Source/GUI/kLookAndFeel.cpp"/>
         <FILE id="qr024P" name="kLookAndFeel.h" compile="0" resource="0" file="Source/GUI/kLookAndFeel.h"/>
+        <FILE id="XWyShq" name="rotarySliderWithLabels.cpp" compile="1" resource="0"
+              file="Source/GUI/rotarySliderWithLabels.cpp"/>
+        <FILE id="YIxbH1" name="rotarySliderWithLabels.h" compile="0" resource="0"
+              file="Source/GUI/rotarySliderWithLabels.h"/>
       </GROUP>
       <GROUP id="{7989751D-2D65-1859-A239-ADD02B30501D}" name="DSP">
         <FILE id="eEvJ2a" name="clipper.cpp" compile="1" resource="0" file="Source/DSP/clipper.cpp"/>

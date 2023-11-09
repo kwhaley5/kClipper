@@ -20,11 +20,52 @@ KClipperAudioProcessorEditor::KClipperAudioProcessorEditor (KClipperAudioProcess
     addAndMakeVisible(outMeter[0]);
     addAndMakeVisible(outMeter[1]);
 
-    setRotarySlider(inGain);
+    /*setRotarySlider(inGain);
     setRotarySlider(outGain);
     setHorzSlider(clipCeiling);
     setRotarySlider(oversampling);
-    setRotarySlider(clipType);
+    setRotarySlider(clipType);*/
+    auto& apvts = audioProcessor.apvts;
+
+    auto getParamHelper = [&apvts](const auto& name) -> auto&
+        {
+            return getParam(apvts, name);
+        };
+
+    auto& gainInParam = getParamHelper("inValue");
+    auto& clipCelingParam = getParamHelper("threshold");
+    auto& oversamplingParam = getParamHelper("oversampleSelect");
+    auto& clipTypeParam = getParamHelper("clipSelect");
+    auto& gainOutParam = getParamHelper("outValue");
+
+    inGain = std::make_unique<RotarySliderWithLabels>(&gainInParam, "dB", "In Gain");
+    clipCeiling = std::make_unique<RotarySliderWithLabels>(&clipCelingParam, "dB", "Threshold");
+    oversampling = std::make_unique<RotarySliderWithLabels>(&oversamplingParam, "dB", "OverSampling");
+    clipType = std::make_unique<RotarySliderWithLabels>(&clipTypeParam, "dB", "Clipping Type");
+    outGain = std::make_unique<RotarySliderWithLabels>(&gainOutParam, "dB", "Out Gain");
+
+    auto makeAttachmentHelper = [&apvts](auto& attachment, const auto& name, auto& slider)
+        {
+            makeAttachment(attachment, apvts, name, slider);
+        };
+
+    makeAttachmentHelper(inGainAT, "inValue", *inGain);
+    makeAttachmentHelper(clipCelingAT, "threshold", *clipCeiling);
+    makeAttachmentHelper(oversamplingAT, "oversampleSelect", *oversampling);
+    makeAttachmentHelper(clipTypeAT, "clipSelect", *clipType);
+    makeAttachmentHelper(outGainAT, "outValue", *outGain);
+
+    addLabelPairs(inGain->labels, 0, 1, gainInParam, "dB");
+    addLabelPairs(clipCeiling->labels, 3, 1, clipCelingParam, "dB");
+    addLabelPairs(oversampling->labels, 3, 1, oversamplingParam, "");
+   //addLabelPairs(clipType->labels, 0, 2, clipTypeParam, "");
+   // addLabelPairs(outGain->labels, 0, 3, gainOutParam, "dB");
+
+    addAndMakeVisible(*inGain);
+    addAndMakeVisible(*clipCeiling);
+    addAndMakeVisible(*oversampling);
+    addAndMakeVisible(*clipType);
+    addAndMakeVisible(*outGain);
 
     addAndMakeVisible(bypass);
 
@@ -64,7 +105,7 @@ void KClipperAudioProcessorEditor::paint(juce::Graphics& g)
     g.drawFittedText(height, center, juce::Justification::right, 1);*/
     center.translate(0, -15);
     auto centerHold = center;
-    g.drawRect(center);
+    //g.drawRect(center);
     //g.drawRect(noMeter);
 
     g.setColour(juce::Colour(64u, 194u, 230u));
@@ -108,14 +149,14 @@ void KClipperAudioProcessorEditor::resized()
 
     auto center = bounds.reduced(bounds.getWidth() * .3, bounds.getHeight() * .2);
     center.translate(0, -15);
-    clipType.setBounds(center);
+    clipType->setBounds(center);
 
     auto bottom = bounds.removeFromBottom(bounds.getHeight() * .2);
     auto botLeft = bottom.removeFromLeft(bottom.getWidth() * .25);
     auto botRight = bottom.removeFromRight(bottom.getWidth() * .33);
-    inGain.setBounds(botLeft);
-    outGain.setBounds(botRight);
-    oversampling.setBounds(bottom);
+    inGain->setBounds(botLeft);
+    outGain->setBounds(botRight);
+    oversampling->setBounds(bottom);
 
     auto info = bounds.removeFromTop(bounds.getHeight() * .125);
     auto bypassArea = info.removeFromRight(info.getWidth() * .12);
@@ -124,7 +165,7 @@ void KClipperAudioProcessorEditor::resized()
     auto horzArea = bounds.removeFromBottom(bounds.getHeight() * .1);
     horzArea.removeFromLeft(horzArea.getWidth() * .2);
     horzArea.removeFromRight(horzArea.getWidth() * .25);
-    clipCeiling.setBounds(horzArea);
+    clipCeiling->setBounds(horzArea);
 
 }
 

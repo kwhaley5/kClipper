@@ -18,11 +18,8 @@ void Laf::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int heigh
     auto fill = Colour(64u, 194u, 230u);
 
     auto bounds = Rectangle<int>(x, y, width, height).toFloat();
-    auto reduceWidth = jmax(bounds.getWidth() * .15, (double)18);
-    auto reduceHeight = jmax(bounds.getHeight() * .15, (double)18);
-    auto boundsShrink = /*bounds;*/  bounds.reduced(reduceWidth, reduceHeight);
 
-    auto radius = jmin(boundsShrink.getWidth(), boundsShrink.getHeight()) / 2.0f;
+    auto radius = jmin(bounds.getWidth(), bounds.getHeight()) / 2.0f;
     auto toAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
     auto lineW = jmin(8.f, radius * 0.5f);
     auto arcRadius = radius - lineW * .25;
@@ -31,8 +28,8 @@ void Laf::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int heigh
     auto rootTwo = MathConstants<float>::sqrt2;
 
     Path backgroundArc;
-    backgroundArc.addCentredArc(boundsShrink.getCentreX(),
-        boundsShrink.getCentreY(),
+    backgroundArc.addCentredArc(bounds.getCentreX(),
+        bounds.getCentreY(),
         arcRadius,
         arcRadius,
         0.0f,
@@ -46,8 +43,8 @@ void Laf::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int heigh
     if (slider.isEnabled())
     {
         Path valueArc;
-        valueArc.addCentredArc(boundsShrink.getCentreX(),
-            boundsShrink.getCentreY(),
+        valueArc.addCentredArc(bounds.getCentreX(),
+            bounds.getCentreY(),
             arcRadius,
             arcRadius,
             0.0f,
@@ -61,33 +58,32 @@ void Laf::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int heigh
 
     //Set Circle color
     g.setColour(Colours::black);
-    g.fillRoundedRectangle(boundsShrink.getCentreX() - (radius * rootTwo / 2), boundsShrink.getCentreY() - (radius * rootTwo / 2), radius * rootTwo, radius * rootTwo, radius * .7);
+    g.fillRoundedRectangle(bounds.getCentreX() - (radius * rootTwo / 2), bounds.getCentreY() - (radius * rootTwo / 2), radius * rootTwo, radius * rootTwo, radius * .7);
 
     //add circle around dial
     g.setColour(Colour(186u, 34u, 34u));
-    g.drawRoundedRectangle(boundsShrink.getCentreX() - (radius * rootTwo / 2), boundsShrink.getCentreY() - (radius * rootTwo / 2), radius * rootTwo, radius * rootTwo, radius * .7, 1.5f);
+    g.drawRoundedRectangle(bounds.getCentreX() - (radius * rootTwo / 2), bounds.getCentreY() - (radius * rootTwo / 2), radius * rootTwo, radius * rootTwo, radius * .7, 1.5f);
 
     //make dial line
     g.setColour(Colours::whitesmoke);
-    Point<float> thumbPoint(boundsShrink.getCentreX() + radius / rootTwo * std::cos(toAngle - MathConstants<float>::halfPi), //This is one is farthest from center.
-        boundsShrink.getCentreY() + radius / rootTwo * std::sin(toAngle - MathConstants<float>::halfPi));
+    Point<float> thumbPoint(bounds.getCentreX() + radius / rootTwo * std::cos(toAngle - MathConstants<float>::halfPi), //This is one is farthest from center.
+        bounds.getCentreY() + radius / rootTwo * std::sin(toAngle - MathConstants<float>::halfPi));
 
-    Point<float> shortLine(boundsShrink.getCentreX() + (arcRadius - (arcRadius / rootTwo)) * std::cos(toAngle - MathConstants<float>::halfPi), //This one is closer to the center
-        boundsShrink.getCentreY() + (arcRadius - (arcRadius / rootTwo)) * std::sin(toAngle - MathConstants<float>::halfPi));
+    Point<float> shortLine(bounds.getCentreX() + (arcRadius - (arcRadius / rootTwo)) * std::cos(toAngle - MathConstants<float>::halfPi), //This one is closer to the center
+        bounds.getCentreY() + (arcRadius - (arcRadius / rootTwo)) * std::sin(toAngle - MathConstants<float>::halfPi));
 
     g.drawLine(shortLine.getX(), shortLine.getY(), thumbPoint.getX(), thumbPoint.getY(), lineW / 2);
-    //g.drawRect(boundsShrink);
 
-    auto str = String(slider.getName());
-    g.setFont(15);
-    auto strWidth = g.getCurrentFont().getStringWidth(str);
+    //auto str = String(slider.getName());
+    //g.setFont(15);
+    //auto strWidth = g.getCurrentFont().getStringWidth(str);
 
-    Rectangle<float> r;
-    r.setBottom(15);
-    r.setLeft(bounds.getCentre().getX() - strWidth);
-    r.setRight(bounds.getCentre().getX() + strWidth);
-    r.setTop(bounds.getTopLeft().getY());
-    g.drawFittedText(str, r.toNearestInt(), juce::Justification::centred, 1);
+    //Rectangle<float> r;
+    //r.setBottom(15);
+    //r.setLeft(bounds.getCentre().getX() - strWidth);
+    //r.setRight(bounds.getCentre().getX() + strWidth);
+    //r.setTop(bounds.getTopLeft().getY());
+    //g.drawFittedText(str, r.toNearestInt(), juce::Justification::centred, 1);
 
 }
 

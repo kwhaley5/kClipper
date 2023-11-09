@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "GUI/kLevelMeter.h"
 #include "GUI/kLookAndFeel.h"
+#include "GUI/rotarySliderWithLabels.h"
 
 //==============================================================================
 /**
@@ -41,13 +42,17 @@ private:
     std::array<LevelMeter, 2> meter;
     std::array<LevelMeter, 2> outMeter;
 
-    juce::Slider inGain{ "In Gain" },
-        oversampling{ "Oversampling" },
-        outGain{ "Out Gain" },
-        clipCeiling{ "Clip Ceiling" },
-        clipType{ "Clip Type" };
+    std::unique_ptr<RotarySliderWithLabels> inGain,
+        oversampling,
+        outGain,
+        clipCeiling,
+        clipType;
 
     juce::ToggleButton bypass{ "Bypass" };
+
+    using Att = juce::AudioProcessorValueTreeState::SliderAttachment;
+
+    std::unique_ptr<Att> inGainAT, oversamplingAT, outGainAT, clipCelingAT, clipTypeAT;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (KClipperAudioProcessorEditor)
 };
