@@ -59,7 +59,26 @@ KClipperAudioProcessorEditor::KClipperAudioProcessorEditor (KClipperAudioProcess
     //addLabelPairs(clipCeiling->labels, 0, 1, clipCelingParam, "dB");
     addLabelPairs(oversampling->labels, 4, 2, oversamplingParam, "");
     addLabelPairs(clipType->labels, 1, 3, clipTypeParam, "");
-   addLabelPairs(outGain->labels, 1, 4, gainOutParam, "dB");
+    addLabelPairs(outGain->labels, 1, 4, gainOutParam, "dB");
+
+    inGain.get()->onValueChange = [this, &gainInParam]()
+        {
+            addLabelPairs(inGain->labels, 1, 2, gainInParam, "dB");
+        };
+    oversampling.get()->onValueChange = [this, &oversamplingParam]()
+        {
+            addLabelPairs(oversampling->labels, 4, 2, oversamplingParam, "");
+        };
+    clipType.get()->onValueChange = [this, &clipTypeParam]()
+        {
+            addLabelPairs(clipType->labels, 1, 3, clipTypeParam, "");
+        };
+    outGain.get()->onValueChange = [this, &gainOutParam]()
+        {
+            addLabelPairs(outGain->labels, 1, 4, gainOutParam, "dB");
+        };
+
+    
 
     addAndMakeVisible(*inGain);
     addAndMakeVisible(*clipCeiling);

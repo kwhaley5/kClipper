@@ -148,6 +148,10 @@ juce::String getValString(const juce::RangedAudioParameter& param, bool isName, 
 
     auto name = param.getName(20);
     auto val = param.getValue();
+    auto range = param.getNormalisableRange();
+    auto normVal = juce::jmap(val, 0.f, 1.f, range.start, range.end);
+    normVal = floor(normVal * 100);
+    normVal /= 100;
 
     if (isName)
     {
@@ -155,7 +159,7 @@ juce::String getValString(const juce::RangedAudioParameter& param, bool isName, 
     }
     else
     {
-        str << val << suffix;
+        str << normVal << suffix;
     }
 
     return str;
