@@ -24,6 +24,10 @@ void RotarySliderWithLabels::paint(juce::Graphics& g) {
     g.setColour(Colours::white);
     //g.drawFittedText(getName(), bounds.removeFromTop(getTextBoxHeight() - 3), Justification::centredBottom, 1);
 
+    /*g.setColour(Colours::red);
+    g.drawRect(getLocalBounds());
+    g.setColour(Colours::yellow);
+    g.drawRect(sliderBounds);*/
 
     getLookAndFeel().drawRotarySlider(g,
         sliderBounds.getX(),
@@ -36,29 +40,50 @@ void RotarySliderWithLabels::paint(juce::Graphics& g) {
         *this);
 
     auto center = sliderBounds.toFloat().getCentre();
-    auto radius = sliderBounds.getWidth() * .5f;
+    auto radius = sliderBounds.getHeight() * .5f;
 
-    g.setColour(Colour(64u, 194u, 230u));
-    g.setFont(15);
+    g.setColour(Colours::white);
+    g.setFont(14);
 
     auto numChoices = labels.size();
 
-    //labels for rotarty
-    for (int i = 0; i < numChoices; i++) {
+    for(int i = 0; i < numChoices; ++i)
+    {
+        Rectangle<float> r;
+        Point<float> c;
+        float ang;
 
         auto pos = labels[i].pos;
-
-        auto ang = jmap(pos, 0.f, 5.f, 0.f, 2* MathConstants<float>::pi);
-
-        auto c = center.getPointOnCircumference(radius, ang);
-
-        Rectangle<float> r;
         auto str = labels[i].label;
-        r.setSize(g.getCurrentFont().getStringWidth(str), getTextHeight());
-        r.setCentre(c);
-        r.setY(r.getY() + getTextHeight());
+        auto strWidth = g.getCurrentFont().getStringWidth(str);
 
-        g.drawFittedText(str, r.toNearestInt(), juce::Justification::centred, 1);
+        //if (strWidth > 90) { strWidth = 90; };
+        
+        r.setSize(strWidth, getTextHeight());
+
+        if (pos == 1)
+        {
+            c = center.getPointOnCircumference(radius + getTextHeight() * .75, 0);
+            r.setCentre(c);
+        }
+        else if (pos == 2)
+        {
+            r.setX(bounds.getWidth() - r.getWidth() - 5);
+            r.setY(bounds.getHeight() / 2 - getTextHeight() / 2);
+            
+        }
+        else if (pos == 3)
+        {
+            c = center.getPointOnCircumference(radius * 1, MathConstants<float>::pi);
+            r.setCentre(c);
+        }
+        else 
+        {
+            r.setX(bounds.getX() + 5);
+            r.setY(bounds.getHeight() / 2 - getTextHeight() / 2);
+        }
+
+        g.drawFittedText(str, r.toNearestInt(), juce::Justification::centred, 2, 1);
     }
 }
 

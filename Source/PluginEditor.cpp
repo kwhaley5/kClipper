@@ -55,11 +55,11 @@ KClipperAudioProcessorEditor::KClipperAudioProcessorEditor (KClipperAudioProcess
     makeAttachmentHelper(clipTypeAT, "clipSelect", *clipType);
     makeAttachmentHelper(outGainAT, "outValue", *outGain);
 
-    addLabelPairs(inGain->labels, 0, 1, gainInParam, "dB");
-    addLabelPairs(clipCeiling->labels, 3, 1, clipCelingParam, "dB");
-    addLabelPairs(oversampling->labels, 3, 1, oversamplingParam, "");
-   //addLabelPairs(clipType->labels, 0, 2, clipTypeParam, "");
-   // addLabelPairs(outGain->labels, 0, 3, gainOutParam, "dB");
+    addLabelPairs(inGain->labels, 1, 2, gainInParam, "dB");
+    //addLabelPairs(clipCeiling->labels, 0, 1, clipCelingParam, "dB");
+    addLabelPairs(oversampling->labels, 4, 2, oversamplingParam, "");
+    addLabelPairs(clipType->labels, 1, 3, clipTypeParam, "");
+   addLabelPairs(outGain->labels, 1, 4, gainOutParam, "dB");
 
     addAndMakeVisible(*inGain);
     addAndMakeVisible(*clipCeiling);

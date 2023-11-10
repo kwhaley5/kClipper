@@ -74,17 +74,6 @@ void Laf::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int heigh
 
     g.drawLine(shortLine.getX(), shortLine.getY(), thumbPoint.getX(), thumbPoint.getY(), lineW / 2);
 
-    //auto str = String(slider.getName());
-    //g.setFont(15);
-    //auto strWidth = g.getCurrentFont().getStringWidth(str);
-
-    //Rectangle<float> r;
-    //r.setBottom(15);
-    //r.setLeft(bounds.getCentre().getX() - strWidth);
-    //r.setRight(bounds.getCentre().getX() + strWidth);
-    //r.setTop(bounds.getTopLeft().getY());
-    //g.drawFittedText(str, r.toNearestInt(), juce::Justification::centred, 1);
-
 }
 
 void Laf::drawToggleButton(juce::Graphics& g, juce::ToggleButton& button,
