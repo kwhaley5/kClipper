@@ -27,7 +27,8 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void setRotarySlider(juce::Slider&);
-    void setHorzSlider(juce::Slider&);
+    void setVertSlider(juce::Slider&);
+    void attachRSWL();
 
     void timerCallback() override;
 
@@ -45,14 +46,22 @@ private:
     std::unique_ptr<RotarySliderWithLabels> inGain,
         oversampling,
         outGain,
-        clipCeiling,
         clipType;
+
+    juce::Slider clipCeiling{ "Threshold" };
 
     juce::ToggleButton bypass{ "Bypass" };
 
     using Att = juce::AudioProcessorValueTreeState::SliderAttachment;
 
-    std::unique_ptr<Att> inGainAT, oversamplingAT, outGainAT, clipCelingAT, clipTypeAT;
+    std::unique_ptr<Att> inGainAT, oversamplingAT, outGainAT, clipTypeAT;
+    Att clipCelingAT;
+
+    juce::AudioProcessorValueTreeState::ButtonAttachment bypassAT;
+
+    std::vector<juce::String> oversamplingText{ "1x", "2x", "4x", "8x" };
+    std::vector<juce::String> clipText{ "Hard Clip", "Cubic", "Sine", "Tanget", "ArcTangent", "Quintic"};
+    std::vector<juce::String> empty;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (KClipperAudioProcessorEditor)
 };

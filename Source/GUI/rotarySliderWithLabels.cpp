@@ -22,12 +22,6 @@ void RotarySliderWithLabels::paint(juce::Graphics& g) {
 
     auto bounds = getLocalBounds();
     g.setColour(Colours::white);
-    //g.drawFittedText(getName(), bounds.removeFromTop(getTextBoxHeight() - 3), Justification::centredBottom, 1);
-
-    /*g.setColour(Colours::red);
-    g.drawRect(getLocalBounds());
-    g.setColour(Colours::yellow);
-    g.drawRect(sliderBounds);*/
 
     getLookAndFeel().drawRotarySlider(g,
         sliderBounds.getX(),
@@ -56,32 +50,41 @@ void RotarySliderWithLabels::paint(juce::Graphics& g) {
         auto pos = labels[i].pos;
         auto str = labels[i].label;
         auto strWidth = g.getCurrentFont().getStringWidth(str);
+        auto textHeight = getTextHeight();
+        float extraPush = 0;
 
-        //if (strWidth > 90) { strWidth = 90; };
+        if (strWidth > 90) 
+        { 
+            strWidth = 90;
+            extraPush = textHeight;
+            textHeight *= 2;
+        };
         
-        r.setSize(strWidth, getTextHeight());
+        r.setSize(strWidth, textHeight);
 
-        if (pos == 1)
+        if (pos == 1) //Will need to do something based on ratios. Normal sliders this does not work for 2 & 4
         {
-            c = center.getPointOnCircumference(radius + getTextHeight() * .75, 0);
+            c = center.getPointOnCircumference(radius + textHeight + extraPush, 0); //this may also be bad for smaller sliders
             r.setCentre(c);
         }
         else if (pos == 2)
         {
-            r.setX(bounds.getWidth() - r.getWidth() - 5);
-            r.setY(bounds.getHeight() / 2 - getTextHeight() / 2);
+            c = center.getPointOnCircumference(3.5 * radius + extraPush, MathConstants<float>::pi / 2);
+            r.setCentre(c);
             
         }
         else if (pos == 3)
         {
-            c = center.getPointOnCircumference(radius * 1, MathConstants<float>::pi);
+            c = center.getPointOnCircumference(radius * 1 + extraPush, MathConstants<float>::pi);
             r.setCentre(c);
         }
         else 
         {
-            r.setX(bounds.getX() + 5);
-            r.setY(bounds.getHeight() / 2 - getTextHeight() / 2);
+            c = center.getPointOnCircumference(3.5 * radius + extraPush, 3 * MathConstants<float>::pi / 2);
+            r.setCentre(c);
         }
+
+        //g.drawRect(r);
 
         g.drawFittedText(str, r.toNearestInt(), juce::Justification::centred, 2, 1);
     }
@@ -142,7 +145,7 @@ void RotarySliderWithLabels::changeParam(juce::RangedAudioParameter* p)
     repaint();
 }
 
-juce::String getValString(const juce::RangedAudioParameter& param, bool isName, juce::String suffix)
+juce::String getValString(const juce::RangedAudioParameter& param, bool isName, juce::String suffix, std::vector<juce::String> vector)
 {
     juce::String str;
 
@@ -159,7 +162,15 @@ juce::String getValString(const juce::RangedAudioParameter& param, bool isName, 
     }
     else
     {
-        str << normVal << suffix;
+        if (vector.size() > 0)
+        {
+            auto type = vector.at(normVal);
+            str << type;
+        }
+        else
+        {
+            str << normVal << suffix;
+        }
     }
 
     return str;

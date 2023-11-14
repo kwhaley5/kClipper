@@ -76,11 +76,11 @@ template <
     typename SuffixType
 >
 
-void addLabelPairs(Labels& labels, const float posOne, const float posTwo, const ParamType& param, const SuffixType& suffix)
+void addLabelPairs(Labels& labels, const float posOne, const float posTwo, const ParamType& param, const SuffixType& suffix, std::vector<juce::String> array)
 {
     labels.clear();
-    labels.add({ posOne, getValString(param, true, suffix) });
-    labels.add({ posTwo, getValString(param, false, suffix) });
+    labels.add({ posOne, getValString(param, true, suffix, array) });
+    labels.add({ posTwo, getValString(param, false, suffix, array) });
 }
 
-juce::String getValString(const juce::RangedAudioParameter& param, bool getLow, juce::String suffix);
+juce::String getValString(const juce::RangedAudioParameter& param, bool getLow, juce::String suffix, std::vector<juce::String>);

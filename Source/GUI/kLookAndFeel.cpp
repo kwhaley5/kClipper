@@ -164,7 +164,7 @@ void Laf::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int heigh
         Path backgroundTrack;
         backgroundTrack.startNewSubPath(startPoint);
         backgroundTrack.lineTo(endPoint);
-        g.setColour(Colours::black);
+        g.setColour(Colours::dimgrey);
         g.strokePath(backgroundTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
 
         Path valueTrack;
@@ -206,11 +206,13 @@ void Laf::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int heigh
 
             auto font = g.getCurrentFont();
             auto newWidth = font.getStringWidth(name);
-            auto thumbRect = Rectangle<float>(static_cast<float> (newWidth + 5), static_cast<float> (thumbWidth + 5)).withCentre(isThreeVal ? thumbPoint : maxPoint);
-            auto grad = ColourGradient::ColourGradient(Colour(186u, 34u, 34u), thumbRect.getCentreX(), thumbRect.getCentreY(), Colours::black, thumbRect.getWidth() / 2, thumbRect.getHeight() / 2, true);
-            g.setGradientFill(grad);
+            auto whiteRect = Rectangle<float>(static_cast<float> (newWidth + 5), static_cast<float> (thumbWidth + 5)).withCentre(isThreeVal ? thumbPoint : maxPoint);
+            auto thumbRect = whiteRect.reduced(1, 1);
+            g.setColour(Colours::white);
+            g.fillRect(whiteRect);
+            g.setColour(Colours::black);
+            g.fillRect(thumbRect);
 
-            g.fillRoundedRectangle(thumbRect, 2);
             g.setColour(juce::Colours::whitesmoke);
             g.drawText(thumb ? name : value, thumbRect, Justification::centred, 1);
         }
