@@ -25,7 +25,6 @@ void Clipper::process(juce::dsp::AudioBlock<float>& block, int channel)
     case Clipper::hardClipper:
         for (int s = 0; s < len; ++s)
         {
-            auto input = channelInput[s];
             auto gain = juce::Decibels::decibelsToGain(clipperThresh);
             channelInput[s] > gain ? channelOutput[s] = gain : channelOutput[s] = channelInput[s];
             channelInput[s] < -gain ? channelOutput[s] = -gain : channelOutput[s] = channelInput[s];
@@ -49,7 +48,6 @@ void Clipper::process(juce::dsp::AudioBlock<float>& block, int channel)
     case Clipper::sin:
         for (int s = 0; s < len; ++s)
         {
-            auto input = channelInput[s];
             auto newLimit = juce::Decibels::decibelsToGain(clipperThresh);
             auto inverse = 1 / newLimit;
             auto resizeSamples = channelInput[s] * inverse;
