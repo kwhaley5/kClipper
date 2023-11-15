@@ -34,6 +34,8 @@ KClipperAudioProcessorEditor::KClipperAudioProcessorEditor (KClipperAudioProcess
     setVertSlider(clipCeiling);
     addAndMakeVisible(bypass);
 
+    startTimerHz(24);
+
     setSize(600, 300);
 }
 

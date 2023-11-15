@@ -31,7 +31,6 @@ struct RotarySliderWithLabels : juce::Slider {
     void paint(juce::Graphics& g) override;
     juce::Rectangle<int>  getSliderBounds() const;
     int getTextHeight() const { return 14; };
-    virtual juce::String getDisplayString() const;
 
     void changeParam(juce::RangedAudioParameter* p);
 
@@ -47,7 +46,6 @@ template <
     typename ParamName,
     typename SliderType
 >
-
 void makeAttachment(std::unique_ptr<Attachment>& attachment,
     APVTS& apvts,
     const ParamName& name,
@@ -62,7 +60,6 @@ template <
     typename APVTS,
     typename Name
 >
-
 juce::RangedAudioParameter& getParam(APVTS& apvts, const Name& name)
 {
     auto param = apvts.getParameter(name);
@@ -75,7 +72,6 @@ template <
     typename ParamType,
     typename SuffixType
 >
-
 void addLabelPairs(Labels& labels, const float posOne, const float posTwo, const ParamType& param, const SuffixType& suffix, std::vector<juce::String> array)
 {
     labels.clear();
